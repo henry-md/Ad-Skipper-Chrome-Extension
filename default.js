@@ -113,7 +113,6 @@ document.onkeydown = function (e) {
         document.body.removeChild(div);
       }, 2000);
     } else console.log(`\t\t--- KEYPRESS IGNORED ---`);
-
   }
   else {
     // don't tell me option wasn't pressed when I press option

@@ -1,8 +1,8 @@
 { 
-  "name": "lol xd 69", 
-  "version": "4.2.0",
+  "name": "Ad-Skipper", 
+  "version": "1.0.0",
   "manifest_version": 3,
-  "description": "Sells all your data to Communist China and Kamala Harris who review printout copies of your search history and silently judge you.",
+  "description": "Sell your data to the highest bidder. Hey, at least we're honest about it.",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
