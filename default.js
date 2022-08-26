@@ -47,7 +47,7 @@ let new_speed = 1;
 let valid_command = true;
 document.onkeydown = function (e) {
   if (option_pressed) {
-    console.log('option pressed');
+    // console.log('option pressed');
     e = e || window.event;
 
     // create dom object to display keypress
@@ -61,6 +61,7 @@ document.onkeydown = function (e) {
     // (shift+num : ± 0.5)
     switch (e.keyCode) {
       case 18: break; // option
+      case 32: pause_play(); break; // space // for youtube
       // j- k+
       case 74: new_speed = old_speed - (less_than_or_equal_10(old_speed) ? 0.1 : 1); break; // j
       case 75: new_speed = old_speed + (less_than_10(old_speed) ? 0.1 : 1); break; // k
@@ -77,8 +78,8 @@ document.onkeydown = function (e) {
       case 56: new_speed = 8; break; // 8
       case 57: new_speed = 9; break; // 9
       case 48: new_speed = 10; break; // 0
-      case 189: new_speed = 20; break; // -
-      case 187: new_speed = 1000; break; // =
+      case 189: new_speed = 16; break; // -
+      case 187: new_speed = 16; break; // =
       // letters between nums -or- shift -> +0.5 speed    // reserve i for inspect element command
       case 81: new_speed = 1.5; break; // q
       case 87: new_speed = 2.5; break; // w
@@ -92,7 +93,6 @@ document.onkeydown = function (e) {
       case 80: new_speed = 10.5; break; // p
       default: valid_command = false;
     }
-    new_speed = Math.min(new_speed, 16); // chrome restricts playback rate [small, 16]
     if (new_speed != old_speed) {
       console.log(`old speed was ${old_speed} and new speed is ${new_speed}`);
       valid_command = true;
@@ -100,7 +100,11 @@ document.onkeydown = function (e) {
     if (valid_command) {
       console.log(`\t\t--- NEW PLAYBACK RATE: ${display_speed(new_speed)} ---`); 
       for (vid of vids) vid.playbackRate = new_speed;
-      div.innerHTML = display_speed(new_speed);
+      if (new_speed != 16) {
+        div.innerHTML = display_speed(new_speed);
+      } else {
+        div.innerHTML = 'SKIP';
+      }
       old_speed = new_speed;
 
       // show keypress tracker, then fade
@@ -113,6 +117,7 @@ document.onkeydown = function (e) {
         document.body.removeChild(div);
       }, 2000);
     } else console.log(`\t\t--- KEYPRESS IGNORED ---`);
+
   }
   else {
     // don't tell me option wasn't pressed when I press option
