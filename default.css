@@ -1,0 +1,23 @@
+/* keypress badge */
+.keypress_tracker {
+  position: fixed;
+  top: 65px; right: 20px; /* top: 60px; right: 100px !important; */ /*  */
+  z-index: 2147483647;
+
+  font-family: "Segoe UI", Helvetica, sans-serif;
+  font-size: 20px;
+  color: white;
+  line-height: 20px;
+  text-align: center;
+
+  background: linear-gradient(to left top, #a87bf2, #92f6ec); /* #92f6ec, #a87bf2 */ /* #e66465, #9198e5 */
+  /*background-color: #2b2b2b; /* 2b2b2b 525252 */
+  padding: 3px 8px 2px 8px; /* bottom padding be whilin */
+  border-radius: 5px; /* 100px */
+  box-shadow: 0px 0px 5px rgb(195, 195, 195);
+  /* border shadow can be added to websites individually */
+
+  opacity: 1;
+  transition: opacity 1s;
+  transition-delay: 0s;
+}
