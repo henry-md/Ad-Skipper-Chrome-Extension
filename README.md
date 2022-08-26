@@ -1,7 +1,11 @@
-# Use
+## Extension Uses
+This is adds ad-skipping functionality to Chrome as a Chrome extension.
+
+While this is packaged as a Chrome extension, I also personally use it for Safari. You just need to find a method to inject the CSS and JS into the page. I use PageExtender for this in Safari.
+
+## How to Use
 - Skip all ads (and all videos) by holding 'option' and pressing '+'.
 - Speed up any videos by pressing option and holding another letter. The speed of the video will vary depending on the key:
-    - `: 0.5x
     - 1: 1.0x
     - 2: 2.0x
     - 3: 3.0x 
@@ -14,5 +18,7 @@
 
     - j: - 0.1x or - 1x (video speed will decrement by 0.1 or 1 if the current video speed is below 10x or over 10x, respectively.)
     - k: + 0.1x or + 1x (video speed will increase by 0.1 or 1 if the current video speed is below 10x or over 10x, respectively.)
+
+    - `: 0.5x (because it's the symbol before 1)
     - -: 20x
     - +: 1000x (thus the ad-skipper)
