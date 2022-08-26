@@ -78,7 +78,7 @@ document.onkeydown = function (e) {
       case 56: new_speed = 8; break; // 8
       case 57: new_speed = 9; break; // 9
       case 48: new_speed = 10; break; // 0
-      case 189: new_speed = 16; break; // -
+      case 189: new_speed = 16; break; // - # Safari supports 1000x speeds, but Chrome supports max 16x.
       case 187: new_speed = 16; break; // =
       // letters between nums -or- shift -> +0.5 speed    // reserve i for inspect element command
       case 81: new_speed = 1.5; break; // q
