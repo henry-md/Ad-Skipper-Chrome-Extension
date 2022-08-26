@@ -3,12 +3,14 @@ This is adds ad-skipping functionality to Chrome as a Chrome extension.
 
 While this is packaged as a Chrome extension, I also personally use it for Safari. You just need to find a method to inject the CSS and JS into the page. I use PageExtender for this in Safari.
 
-# Demonstration skipping youtube ad
-### Note the badge in the upper-right hand coner of the screen - it will say "SKIP" when executing the skip command.
+# Skipping youtube ad
+Note the badge in the upper-right hand coner of the screen - it will say "SKIP" when executing the skip command.
+
 https://user-images.githubusercontent.com/62524061/187002447-4d64bcd3-949b-490c-a3af-ca5077d5d75b.mp4
 
-# Demonstration speeding up Snapchat website.
-### Note the badge in the upper-right. I go through a bunch of different speeds.
+# Speeding up Snapchat website.
+Note the badge in the upper-right. I go through a bunch of different speeds.
+
 https://user-images.githubusercontent.com/62524061/187002549-f4ae40a8-951b-469f-b38a-e99bdd35fe27.mov
 
 # How to Use
