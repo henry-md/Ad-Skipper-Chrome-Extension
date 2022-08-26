@@ -22,3 +22,5 @@ While this is packaged as a Chrome extension, I also personally use it for Safar
     - `: 0.5x (because it's the symbol before 1)
     - -: 20x
     - +: 1000x (thus the ad-skipper)
+
+https://faithdeutschfmp.online/skip_youtube.mp4
