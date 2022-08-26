@@ -29,4 +29,4 @@ https://user-images.githubusercontent.com/62524061/187002549-f4ae40a8-951b-469f-
 
     - `: 0.5x (because it's the symbol before 1)
     - -: 20x
-    - +: 1000x (thus the ad-skipper)
+    - +: 1000x
