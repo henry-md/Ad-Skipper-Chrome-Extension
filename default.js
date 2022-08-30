@@ -48,7 +48,7 @@ let valid_command = true;
 document.onkeydown = function (e) {
   if (option_pressed) {
     // console.log('option pressed');
-    e = e || window.event;
+    e = e || window.event; // edit
 
     // create dom object to display keypress
     let div = document.createElement("div");
