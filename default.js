@@ -2,7 +2,7 @@
 // (1) skipping ads and (2) speeding up videos quicker than otherwise.
 
 // Configuration: Set to true to use Shift key, false to use Option/Alt key
-const USE_SHIFT_KEY = true;
+const USE_SHIFT_KEY = false;
 
 // video el
 vids = document.getElementsByTagName("video");
