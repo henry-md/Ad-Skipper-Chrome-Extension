@@ -1,186 +1,182 @@
 // Creates keybindings for speeding up all video players on the page. This is useful for
 // (1) skipping ads and (2) speeding up videos quicker than otherwise.
 
-// Configuration: Set to true to use Shift key, false to use Option/Alt key
-const USE_SHIFT_KEY = false;
+(() => {
+  // --- Configuration ---
+  const USE_SHIFT_KEY = false;
+  const MODIFIER_KEY_CODE = USE_SHIFT_KEY ? 16 : 18; // 16 = Shift, 18 = Option/Alt
+  const MAX_SPEED = 16;
+  const SPEED_PRESETS = {
+    192: 0.5, // ~
+    49: 1, // 1
+    50: 2, // 2
+    51: 3, // 3
+    52: 4, // 4
+    53: 5, // 5
+    54: 6, // 6
+    55: 7, // 7
+    56: 8, // 8
+    57: 9, // 9
+    48: 10, // 0
+    81: 1.5, // q
+    87: 2.5, // w
+    69: 3.5, // e
+    82: 4.5, // r
+    84: 5.5, // t
+    89: 6.5, // y
+    85: 7.5, // u
+    79: 9.5, // o
+    80: 10.5, // p
+    189: MAX_SPEED, // -
+    187: MAX_SPEED, // =
+  };
 
-// video el
-vids = document.getElementsByTagName("video");
-// for (vid of vids) vid.playbackRate = 1000; // max speed default
+  // --- State ---
+  let modifierPressed = false;
+  let oldSpeed = 1;
+  let newSpeed = 1;
 
-// solves occasional rounding errors, where 11 - 1 is 9.99999993 for ex.
-function less_than_10(num) {
-  if (num > 10) return false;
-  else if (Math.abs(num - 10) < 0.001) return false; // is close to 10
-  return true;
-}
-
-function less_than_or_equal_10(num) {
-  if (num > 10) return false;
-  else if (Math.abs(num - 10) < 0.001) return true; // is close to 10
-  return true;
-}
-
-function greater_than_or_equal_10(num) {
-  if (num > 10) return true;
-  else if (Math.abs(num - 10) < 0.001) return true; // is close to 10
-  return false;
-}
-
-function display_speed(num) {
-  return `${greater_than_or_equal_10(num) ? num.toFixed(0) : num.toFixed(1)}x`;
-}
-
-function remove_all_elements_of_class(class_name) {
-  let elements = document.getElementsByClassName(class_name);
-  while (elements.length > 1) {
-    // allow 1 other keypress tracker max so background shadow illuminates to some degree
-    elements[0].parentNode.removeChild(elements[0]);
+  // --- Utility Functions ---
+  function isCloseTo(num, target, epsilon = 0.001) {
+    return Math.abs(num - target) < epsilon;
   }
-}
 
-// track whether or not modifier key is pressed
-let modifier_pressed = 0;
-const modifier_key_code = USE_SHIFT_KEY ? 16 : 18; // 16 = Shift, 18 = Option/Alt
+  function lessThan10(num) {
+    return num < 10 && !isCloseTo(num, 10);
+  }
 
-window.onkeyup = function (e) {
-  if (e.keyCode === modifier_key_code) modifier_pressed = 0;
-};
-window.onkeydown = function (e) {
-  if (e.keyCode === modifier_key_code) modifier_pressed = 1;
-};
+  function lessThanOrEqual10(num) {
+    return num < 10 || isCloseTo(num, 10);
+  }
 
-let old_speed = vids ? 1 : vids[0].playbackRate;
-let new_speed = 1;
-let valid_command = true;
-document.onkeydown = function (e) {
-  if (modifier_pressed) {
-    // console.log('modifier pressed');
-    e = e || window.event;
+  function greaterThanOrEqual10(num) {
+    return num > 10 || isCloseTo(num, 10);
+  }
 
-    // create dom object to display keypress
-    let div = document.createElement("div");
-    div.classList.add("keypress_tracker");
-    div.innerHTML = "[Error]";
+  function displaySpeed(num) {
+    return `${greaterThanOrEqual10(num) ? num.toFixed(0) : num.toFixed(1)}x`;
+  }
 
-    // numbers and letters except i: ± 0.5
-    // '~': 0.5x, '0': 10x, '-': 20x, '=': 30x.
-    // j- k+
-    // (shift+num : ± 0.5)
-    switch (e.keyCode) {
-      case modifier_key_code:
-        break; // modifier key
-      case 32:
-        pause_play();
-        break; // space // for youtube
-      // j- k+
-      case 74:
-        new_speed = old_speed - (less_than_or_equal_10(old_speed) ? 0.1 : 1);
-        break; // j
-      case 75:
-        new_speed = old_speed + (less_than_10(old_speed) ? 0.1 : 1);
-        break; // k
-      case 191:
-        new_speed = old_speed;
-        break; // ?
-      // numbers
-      case 192:
-        new_speed = 0.5;
-        break; // ~
-      case 49:
-        new_speed = 1;
-        break; // 1
-      case 50:
-        new_speed = 2;
-        break; // 2
-      case 51:
-        new_speed = 3;
-        break; // 3
-      case 52:
-        new_speed = 4;
-        break; // 4
-      case 53:
-        new_speed = 5;
-        break; // 5
-      case 54:
-        new_speed = 6;
-        break; // 6
-      case 55:
-        new_speed = 7;
-        break; // 7
-      case 56:
-        new_speed = 8;
-        break; // 8 // x
-      case 57:
-        new_speed = 9;
-        break; // 9
-      case 48:
-        new_speed = 10;
-        break; // 0
-      case 189:
-        new_speed = 16;
-        break; // - # Safari supports 1000x speeds, but Chrome supports max 16x.
-      case 187:
-        new_speed = 16;
-        break; // =
-      // letters between nums -or- shift -> +0.5 speed    // reserve i for inspect element command
-      case 81:
-        new_speed = 1.5;
-        break; // q
-      case 87:
-        new_speed = 2.5;
-        break; // w
-      case 69:
-        new_speed = 3.5;
-        break; // e
-      case 82:
-        new_speed = 4.5;
-        break; // r
-      case 84:
-        new_speed = 5.5;
-        break; // t
-      case 89:
-        new_speed = 6.5;
-        break; // y
-      case 85:
-        new_speed = 7.5;
-        break; // u
-      /* case 73: new_speed = 8.5; break; // i */
-      case 79:
-        new_speed = 9.5;
-        break; // o
-      case 80:
-        new_speed = 10.5;
-        break; // p
-      default:
-        valid_command = false;
+  function removeAllElementsOfClass(className) {
+    const elements = document.getElementsByClassName(className);
+    while (elements.length > 1) {
+      elements[0].parentNode.removeChild(elements[0]);
     }
-    if (new_speed != old_speed) {
-      console.log(`old speed was ${old_speed} and new speed is ${new_speed}`);
-      valid_command = true;
-    }
-    if (valid_command) {
-      console.log(`\t\t--- NEW PLAYBACK RATE: ${display_speed(new_speed)} ---`);
-      for (vid of vids) vid.playbackRate = new_speed;
-      if (new_speed != 16) {
-        div.innerHTML = display_speed(new_speed);
-      } else {
-        div.innerHTML = "SKIP";
+  }
+
+  function getAllVideos() {
+    let videos = Array.from(document.getElementsByTagName("video"));
+    const iframes = document.getElementsByTagName("iframe");
+    for (const iframe of iframes) {
+      try {
+        const iframeVideos =
+          iframe.contentDocument?.getElementsByTagName("video");
+        if (iframeVideos) {
+          videos = videos.concat(Array.from(iframeVideos));
+        }
+      } catch {
+        // Ignore cross-origin iframes
       }
-      old_speed = new_speed;
-
-      // show keypress tracker, then fade
-      remove_all_elements_of_class("keypress_tracker");
-      document.body.appendChild(div);
-      setTimeout(function () {
-        div.style.opacity = 0;
-      }, 1000);
-      setTimeout(function () {
-        document.body.removeChild(div);
-      }, 2000);
-    } else console.log(`\t\t--- KEYPRESS IGNORED ---`);
-  } else {
-    // don't tell me modifier wasn't pressed when I press modifier
-    if (e.keyCode != modifier_key_code) console.log("modifier not pressed");
+    }
+    return videos;
   }
-};
+
+  /*
+   * Remove any existing keypress trackers, and add an element
+   * with class "keypress_tracker" to display the current speed.
+   */
+  function showKeypressTracker(content) {
+    removeAllElementsOfClass("keypress_tracker");
+    const div = document.createElement("div");
+    div.className = "keypress_tracker";
+    div.innerHTML = content;
+    document.body.appendChild(div);
+    setTimeout(() => {
+      div.style.opacity = 0;
+    }, 1000);
+    setTimeout(() => {
+      if (div.parentNode) div.parentNode.removeChild(div);
+    }, 2000);
+  }
+
+  function setPlaybackRateForAll(videos, rate) {
+    for (const vid of videos) {
+      vid.playbackRate = rate;
+    }
+  }
+
+  function handleSpeedChange(keyCode, oldSpeed) {
+    if (keyCode === 74) {
+      // j
+      return oldSpeed - (lessThanOrEqual10(oldSpeed) ? 0.1 : 1);
+    }
+    if (keyCode === 75) {
+      // k
+      return oldSpeed + (lessThan10(oldSpeed) ? 0.1 : 1);
+    }
+    if (keyCode === 191) {
+      // ?
+      return oldSpeed;
+    }
+    if (SPEED_PRESETS.hasOwnProperty(keyCode)) {
+      return SPEED_PRESETS[keyCode];
+    }
+    return null;
+  }
+
+  // --- Event Handlers ---
+  function onKeyDown(e) {
+    if (e.keyCode === MODIFIER_KEY_CODE) {
+      modifierPressed = true;
+      return;
+    }
+
+    if (!modifierPressed) {
+      if (e.keyCode !== MODIFIER_KEY_CODE) {
+        console.log("modifier not pressed");
+      }
+      return;
+    }
+
+    let validCommand = true;
+    let videos = getAllVideos();
+    oldSpeed = videos.length ? videos[0].playbackRate : 1;
+    newSpeed = oldSpeed;
+
+    if (e.keyCode === 32) {
+      // Spacebar
+      // Optionally implement pause/play toggle here if needed
+      validCommand = false;
+    } else {
+      const calculatedSpeed = handleSpeedChange(e.keyCode, oldSpeed);
+      if (calculatedSpeed !== null && calculatedSpeed !== oldSpeed) {
+        newSpeed = calculatedSpeed;
+      } else {
+        validCommand = false;
+      }
+    }
+
+    if (validCommand) {
+      setPlaybackRateForAll(videos, newSpeed);
+      showKeypressTracker(
+        newSpeed !== MAX_SPEED ? displaySpeed(newSpeed) : "SKIP"
+      );
+      oldSpeed = newSpeed;
+      console.log(`--- NEW PLAYBACK RATE: ${displaySpeed(newSpeed)} ---`);
+    } else {
+      showKeypressTracker("[Error]");
+      console.log("--- KEYPRESS IGNORED ---");
+    }
+  }
+
+  function onKeyUp(e) {
+    if (e.keyCode === MODIFIER_KEY_CODE) {
+      modifierPressed = false;
+    }
+  }
+
+  // --- Register Event Listeners ---
+  window.addEventListener("keydown", onKeyDown, false);
+  window.addEventListener("keyup", onKeyUp, false);
+
+})();
