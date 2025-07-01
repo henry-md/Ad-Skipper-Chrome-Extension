@@ -65,20 +65,7 @@
   }
 
   function getAllVideos() {
-    let videos = Array.from(document.getElementsByTagName("video"));
-    const iframes = document.getElementsByTagName("iframe");
-    for (const iframe of iframes) {
-      try {
-        const iframeVideos =
-          iframe.contentDocument?.getElementsByTagName("video");
-        if (iframeVideos) {
-          videos = videos.concat(Array.from(iframeVideos));
-        }
-      } catch {
-        // Ignore cross-origin iframes
-      }
-    }
-    return videos;
+    return Array.from(document.getElementsByTagName("video"));
   }
 
   /*
@@ -100,7 +87,8 @@
   }
 
   function setPlaybackRateForAll(videos, rate) {
-    for (const vid of videos) {
+    const new_vids = getAllVideos(); // fuck yo old shi
+    for (const vid of new_vids) {
       vid.playbackRate = rate;
     }
   }

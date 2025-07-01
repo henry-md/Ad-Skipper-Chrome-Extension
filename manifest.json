@@ -1,19 +1,20 @@
 { 
-  "name": "Ad-Skipper", 
+  "name": "Ad Skipper", 
   "version": "1.0.0",
   "manifest_version": 3,
-  "description": "Adds keybindings to your keyboard that speeds up all video players in the window. Can be used to skip ads, or more efficiently change video speeds in Youtube, etc.",
+  "description": "Adds keyboard commands to speed up all video players in the window. Skip ads, or just speed things up.",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "css": ["default.css"],
-      "js": ["default.js"]
+      "js": ["default.js"],
+      "all_frames": true
     }
   ],
   "icons": {
-  "16": "icons/16.png",
-  "32": "icons/32.png",
-  "48": "icons/48.png",
-  "128": "icons/128.png"
-}
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  }
 }
